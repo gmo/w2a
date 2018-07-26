@@ -12,6 +12,7 @@
 (def activity-indicator (r/adapt-react-class (.-ActivityIndicator ReactNative)))
 (def progress (r/adapt-react-class (.-ProgressViewIOS ReactNative)))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
+(def scroll-view (r/adapt-react-class (.-ScrollView ReactNative)))
 
 (def logo-img (js/require "./images/logo.png"))
 
@@ -25,6 +26,14 @@
           :style  {:width 175 
                    :height 80 
                    :margin-bottom 10}}])
+
+(defn tour-img [source]
+  [view
+   {:padding 15}
+   [image {:source (js/require source)
+           :style  {:width 275 
+                    :height 300 
+                    :margin-bottom 10}}]])
 
 (defn loading-screen []
   (let [progress-atom (r/atom 0)]
@@ -64,24 +73,39 @@
                      :progress @progress-atom}]])})))
 
 (defn tour []
-  [view {:style {:flex-direction "column" 
-                 :justify-content "space-between"
-                 :height "100%"
-                 :padding-top "20%"
-                 :padding-bottom "15%"
-                 :width "100%"
-                 :background-color "#cd5334"
-                 :align-items "center"}}
-   [view
-    [logo]
-    [text {:style {:font-size 20
-                   :font-weight "900"
-                   :color "#fff"}} 
-     "Welcome to W2A!"]]
-   [text {:style {:font-size 18
-                  :font-weight "700"
-                  :color "#fff"}} 
-    "We're going to explain how the app works."]])
+  [view {:style {:flex 1
+                 :background-color "#cd5334"}}
+   [view {:style {:flex 1
+                  :align-items :center
+                  :justify-content :center
+                  :width "100%"}}
+    [logo]]
+   [view {:style {:flex 2
+                  :width "100%"
+                  :align-items :center}}
+    [text {:style {:font-size 18
+                   :font-weight "700"
+                   :width "80%"
+                   :color "#fff"
+                   :margin-bottom 10}} 
+     "Take a look at these images to learn about the app!"]
+    [scroll-view {:horizontal true
+                  :shows-horizontal-scroll-indicator true}
+     [tour-img "./images/1.jpg"]
+     [tour-img "./images/2.jpg"]
+     [tour-img "./images/3.jpg"]]]
+   [view {:style {:flex 1
+                  :width "100%"
+                  :justify-content :center
+                  :align-items :center}}
+    [touchable-highlight {:style {:background-color "#17bebb" 
+                                  :padding 10 
+                                  :border-radius 5
+                                  :width "80%"}}
+     [text {:style {:color "white" 
+                    :text-align "center" 
+                    :font-size 24
+                    :font-weight "900"}} "Ready!"]]]])
 
 (defn app-root []
   (case @app-state 
