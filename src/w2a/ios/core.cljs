@@ -8,7 +8,6 @@
 (def app-registry (.-AppRegistry ReactNative))
 (def button (r/adapt-react-class (.-Button ReactNative)))
 (def text (r/adapt-react-class (.-Text ReactNative)))
-(def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
 (def activity-indicator (r/adapt-react-class (.-ActivityIndicator ReactNative)))
@@ -63,13 +62,8 @@
                         :align-items "center"}}
           [view {:style {:align-items "center"}}
            [logo]
-<<<<<<< HEAD
-           [text {:style {:font-size 16 
-                          :font-weight "700" 
-=======
            [text {:style {:font-size 16
                           :font-weight "900"
->>>>>>> 4892450c6a8a6780dfe33beed3a05084e743f5cc
                           :color "rgba(255,255,255,0.7)"
                           :letter-spacing 3
                           :text-align "center"}}
@@ -129,12 +123,11 @@
      "Login"]
     [view {:style {:padding 30
                    :width "100%"}}
-    [view {:style {:border :black
-                   :border-width 2
-                   :padding 10
-                   :width "100%"}}
-     [text-input {:placeholder "Placeholder"
-                  :style {:width "100%"}}]]]]])
+     [view {:style {:border-width 2
+                    :padding 10
+                    :width "100%"}}
+      [text-input {:placeholder "Placeholder"
+                   :style {:width "100%"}}]]]]])
 
 (defn profile []
   [view {:style {:flex-direction "row"
@@ -145,39 +138,38 @@
                  :width "100%"
                  :background-color "#fff"
                  :align-items "left"}}
-    [text {:style {:font-size 18
+   [text {:style {:font-size 18
                   :font-weight "700"}}
-      "- Thanks -"]
-    [text {:style {:font-size 14
+    "- Thanks -"]
+   [text {:style {:font-size 14
                   :font-weight "700"}}
-      "for joining"]
-    [view
-      [text {:style {:font-size 10}}
-        "Name: "]
-      [text-input {:style {:height 20
-                          :border-width 1}
-                  :value "John Doe"}]]
-    [view
-      [text {:style {:font-size 10}}
-        "Email: "]
-      [text-input {:style {:height 20
-                          :border-width 1}
-                  :value "john.doe@gmail.com"}]]
-    [view
-      [text {:style {:font-size 10}}
-        "Phone: "]
-      [text-input {:style {:height 20
-                          :border-width 1}
-                  :value "123-456-7890"}]]
-    [button {:title "Save"
+    "for joining"]
+   [view
+    [text {:style {:font-size 10}}
+     "Name: "]
+    [text-input {:style {:height 20
+                         :border-width 1}
+                 :value "John Doe"}]]
+   [view
+    [text {:style {:font-size 10}}
+     "Email: "]
+    [text-input {:style {:height 20
+                         :border-width 1}
+                 :value "john.doe@gmail.com"}]]
+   [view
+    [text {:style {:font-size 10}}
+     "Phone: "]
+    [text-input {:style {:height 20
+                         :border-width 1}
+                 :value "123-456-7890"}]]
+   [button {:title "Save"
             :style {:align-items "center"}
-            :onPress (fn [] (reset! app-state :community))}]
-  ])
+            :onPress (fn [] (reset! app-state :community))}]])
 
 (defn community []
   [view
-  [text {:style {:font-size 18
-                :font-weight "700"}}
+   [text {:style {:font-size 18
+                  :font-weight "700"}}
     "#Community"]])
 
 (defn app-root []
@@ -185,8 +177,8 @@
     :loading [loading-screen]
     :tour [tour]
     :login [login]
-    :profile [profile])
-    :community [community])
+    :profile [profile]
+    :community [community]))
 
 (defn init []
   (.registerComponent app-registry "w2a" #(r/reactify-component app-root)))
