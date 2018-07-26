@@ -7,6 +7,7 @@
 (def animated-value (.-Value (.-Animated ReactNative)))
 (def app-registry (.-AppRegistry ReactNative))
 (def button (r/adapt-react-class (.-Button ReactNative)))
+(def pan-responder (r/adapt-react-class (.-PanResponder ReactNative)))
 (def text (r/adapt-react-class (.-Text ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
