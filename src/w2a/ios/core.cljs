@@ -6,7 +6,9 @@
 (def easing (.-Easing ReactNative))
 (def animated-value (.-Value (.-Animated ReactNative)))
 (def app-registry (.-AppRegistry ReactNative))
+(def button (r/adapt-react-class (.-Button ReactNative)))
 (def text (r/adapt-react-class (.-Text ReactNative)))
+(def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
 (def activity-indicator (r/adapt-react-class (.-ActivityIndicator ReactNative)))
@@ -24,16 +26,16 @@
 
 (defn logo []
   [image {:source logo-img
-          :style  {:width 175 
-                   :height 80 
+          :style  {:width 175
+                   :height 80
                    :margin-bottom 10}}])
 
 (defn tour-img [source]
   [view
    {:padding 15}
    [image {:source (js/require source)
-           :style  {:width 275 
-                    :height 300 
+           :style  {:width 275
+                    :height 300
                     :margin-bottom 10}}]])
 
 (defn loading-screen []
@@ -43,15 +45,15 @@
        (fn [this]
          (let [id (atom 0)]
            (reset! id
-                   (js/setInterval 
-                     (fn [] 
+                   (js/setInterval
+                     (fn []
                        (let [x (swap! progress-atom #( + 0.005 %))]
                          (when (> x 1.0)
                            (reset! app-state :tour)
                            (js/clearInterval @id)))) 15))))
        :reagent-render
        (fn []
-         [view {:style {:flex-direction "column" 
+         [view {:style {:flex-direction "column"
                         :justify-content "space-between"
                         :height "100%"
                         :padding-top "20%"
@@ -61,11 +63,16 @@
                         :align-items "center"}}
           [view {:style {:align-items "center"}}
            [logo]
+<<<<<<< HEAD
            [text {:style {:font-size 16 
                           :font-weight "700" 
+=======
+           [text {:style {:font-size 16
+                          :font-weight "900"
+>>>>>>> 4892450c6a8a6780dfe33beed3a05084e743f5cc
                           :color "rgba(255,255,255,0.7)"
                           :letter-spacing 3
-                          :text-align "center"}} 
+                          :text-align "center"}}
             "WITNESS TO ALL"]]
           [progress {:style {:width "100%"}
                      :progress-tint-color "#17BEBB"
@@ -88,7 +95,7 @@
                    :font-weight "700"
                    :width "80%"
                    :color "#fff"
-                   :margin-bottom 10}} 
+                   :margin-bottom 10}}
      "Take a look at these images to learn about the app!"]
     [scroll-view {:horizontal true
                   :shows-horizontal-scroll-indicator true}
@@ -99,12 +106,12 @@
                   :width "100%"
                   :justify-content :center
                   :align-items :center}}
-    [touchable-highlight {:style {:background-color "#17bebb" 
-                                  :padding 10 
+    [touchable-highlight {:style {:background-color "#17bebb"
+                                  :padding 10
                                   :border-radius 5
                                   :width "80%"}}
-     [text {:style {:color "white" 
-                    :text-align "center" 
+     [text {:style {:color "white"
+                    :text-align "center"
                     :font-size 24
                     :font-weight "700"}} "Ready!"]]]])
 
@@ -129,11 +136,57 @@
      [text-input {:placeholder "Placeholder"
                   :style {:width "100%"}}]]]]])
 
+(defn profile []
+  [view {:style {:flex-direction "row"
+                 :justify-content "space-between"
+                 :height "100%"
+                 :padding-top "20%"
+                 :padding-bottom "15%"
+                 :width "100%"
+                 :background-color "#fff"
+                 :align-items "left"}}
+    [text {:style {:font-size 18
+                  :font-weight "700"}}
+      "- Thanks -"]
+    [text {:style {:font-size 14
+                  :font-weight "700"}}
+      "for joining"]
+    [view
+      [text {:style {:font-size 10}}
+        "Name: "]
+      [text-input {:style {:height 20
+                          :border-width 1}
+                  :value "John Doe"}]]
+    [view
+      [text {:style {:font-size 10}}
+        "Email: "]
+      [text-input {:style {:height 20
+                          :border-width 1}
+                  :value "john.doe@gmail.com"}]]
+    [view
+      [text {:style {:font-size 10}}
+        "Phone: "]
+      [text-input {:style {:height 20
+                          :border-width 1}
+                  :value "123-456-7890"}]]
+    [button {:title "Save"
+            :style {:align-items "center"}
+            :onPress (fn [] (reset! app-state :community))}]
+  ])
+
+(defn community []
+  [view
+  [text {:style {:font-size 18
+                :font-weight "700"}}
+    "#Community"]])
+
 (defn app-root []
-  (case @app-state 
+  (case @app-state
     :loading [loading-screen]
     :tour [tour]
-    :login [login]))
+    :login [login]
+    :profile [profile])
+    :community [community])
 
 (defn init []
   (.registerComponent app-registry "w2a" #(r/reactify-component app-root)))
