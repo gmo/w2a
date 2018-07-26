@@ -13,13 +13,14 @@
 (def progress (r/adapt-react-class (.-ProgressViewIOS ReactNative)))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 (def scroll-view (r/adapt-react-class (.-ScrollView ReactNative)))
+(def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 
 (def logo-img (js/require "./images/logo.png"))
 
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
 
-(def app-state (r/atom :tour))
+(def app-state (r/atom :login))
 
 (defn logo []
   [image {:source logo-img
@@ -61,7 +62,7 @@
           [view {:style {:align-items "center"}}
            [logo]
            [text {:style {:font-size 16 
-                          :font-weight "900" 
+                          :font-weight "700" 
                           :color "rgba(255,255,255,0.7)"
                           :letter-spacing 3
                           :text-align "center"}} 
@@ -105,12 +106,34 @@
      [text {:style {:color "white" 
                     :text-align "center" 
                     :font-size 24
-                    :font-weight "900"}} "Ready!"]]]])
+                    :font-weight "700"}} "Ready!"]]]])
+
+(defn login []
+  [view {:style {:flex 1
+                 :background-color "#cd5334"}}
+   [view {:style {:flex 1
+                  :align-items :center
+                  :justify-content :center
+                  :width "100%"}}
+    [logo]
+    [text {:style {:color :white
+                   :font-size 20
+                   :font-weight "700"}} 
+     "Login"]
+    [view {:style {:padding 30
+                   :width "100%"}}
+    [view {:style {:border :black
+                   :border-width 2
+                   :padding 10
+                   :width "100%"}}
+     [text-input {:placeholder "Placeholder"
+                  :style {:width "100%"}}]]]]])
 
 (defn app-root []
   (case @app-state 
     :loading [loading-screen]
-    :tour [tour]))
+    :tour [tour]
+    :login [login]))
 
 (defn init []
   (.registerComponent app-registry "w2a" #(r/reactify-component app-root)))
