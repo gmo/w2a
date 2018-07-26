@@ -6,6 +6,8 @@
 (def easing (.-Easing ReactNative))
 (def animated-value (.-Value (.-Animated ReactNative)))
 (def app-registry (.-AppRegistry ReactNative))
+(def button (r/adapt-react-class (.-Button ReactNative)))
+(def pan-responder (.-PanResponder ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def kb-view (r/adapt-react-class (.-KeyboardAvoidingView ReactNative)))
