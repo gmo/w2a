@@ -3,39 +3,38 @@
             [w2a.ios.components :as c]
             [w2a.ios.model :as m]))
 
+(def country (r/atom ""))
+
 (defn profile []
-  [c/view {:style {:flex-direction "row"
-                 :justify-content "space-between"
-                 :height "100%"
-                 :padding-top "20%"
-                 :padding-bottom "15%"
-                 :width "100%"
-                 :background-color "#fff"
-                 :align-items "left"}}
-   [c/text {:style {:font-size 18
-                  :font-weight "700"}}
-    "- Thanks -"]
-   [c/text {:style {:font-size 14
-                  :font-weight "700"}}
-    "for joining"]
-   [c/view
-    [c/text {:style {:font-size 10}}
-     "Name: "]
-    [c/text-input {:style {:height 20
-                         :border-width 1}
-                 :value "John Doe"}]]
-   [c/view
-    [c/text {:style {:font-size 10}}
-     "Email: "]
-    [c/text-input {:style {:height 20
-                         :border-width 1}
-                 :value "john.doe@gmail.com"}]]
-   [c/view
-    [c/text {:style {:font-size 10}}
-     "Phone: "]
-    [c/text-input {:style {:height 20
-                         :border-width 1}
-                 :value "123-456-7890"}]]
-   [c/button {:title "Save"
-            :style {:align-items "center"}
-            :onPress (fn [] (reset! m/app-state :community))}]])
+  [c/kb-view {:behavior :padding
+              :style {:flex 1
+                      :flex-direction "column"
+                      :justify-content "space-between"
+                      :padding 20
+                      :background-color "#cd5334"}}
+   [c/view {:style {:flex 1
+                    :padding 30
+                    :justify-content :center
+                    :align-items :center}}
+    [c/view {:style {
+                     :justify-content :center
+                     :align-items :center}}
+
+     [c/logo]
+     [c/text {:style {:color "white"
+                      :font-size 24
+                      :font-weight "700"}}
+      "Tell us about you."]
+     [c/text {:style {:color "white"
+                      :font-size 16
+                      :margin-top 10
+                      :font-weight "400"}}
+      "Let us customize your experience so you can save more seekers!"]]]
+   [c/view {:style {:flex 1}}
+    [c/input :placeholder "Full Name"]
+    [c/input :placeholder "Email"]
+    [c/input :placeholder "Phone"]
+    [c/view {:style {:margin-top 4
+                     :padding 3}}
+     [c/button "Save"
+      (fn [] (reset! m/app-state :community))]]]])
