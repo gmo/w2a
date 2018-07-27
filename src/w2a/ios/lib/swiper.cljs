@@ -3,13 +3,17 @@
             [w2a.ios.components :as c]
             [w2a.ios.model :as m]))
 
-(def swipe-directions {:right 'SWIPE_RIGHT' :left 'SWIPE_LEFT' :up 'SWIPE_UP' :down 'SWIPE_DOWN'})
+(def swipe-directions {:right "SWIPE_RIGHT" :left "SWIPE_LEFT" :up "SWIPE_UP" :down "SWIPE_DOWN"})
 (def swipe-config {:velocity-threshold 0.1 :directional-offset-threshold 50})
 
 (defn abs [n] (max n (- n)))
 
-(defn is-valid-swipe [velocity velocity-threshold directional-offset directional-offset-threshold]
-  (and (> (abs velocity) velocity-threshold) (> (abs directional-offset) directional-offset-threshold)))
+(defn is-valid-swipe [velocity 
+                      velocity-threshold 
+                      directional-offset 
+                      directional-offset-threshold]
+  (and (> (abs velocity) velocity-threshold) 
+       (> (abs directional-offset) directional-offset-threshold)))
 
 (defn gesture-is-click [gesture-state]
   (and
@@ -38,45 +42,44 @@
 
 (defn get-swipe-direction [evt gesture-state]
   (if (is-valid-horizontal-swipe gesture-state)
-    (if (> (.-dx gesture-state) 0) (:right swipe-directions) (:left swipe-directions))
+    (if (> (.-dx gesture-state) 0) 
+      (:right swipe-directions) 
+      (:left swipe-directions))
     (if (is-valid-vertical-swipe gesture-state)
-      (if (> (.-dy gesture-state) 0) (:down swipe-directions) (:up swipe-directions))
+      (if (> (.-dy gesture-state) 0) 
+        (:down swipe-directions) 
+        (:up swipe-directions))
       nil)))
 
-(defn swiper [{:keys [onSwipeRight onSwipeLeft onSwipeUp onSwipeDown] :as attrs} body]
+(def nop (constantly nil))
+
+(defn swiper [{:keys [onSwipeRight onSwipeLeft onSwipeUp onSwipeDown] 
+               :or {onSwipeRight nop
+                    onSwipeLeft nop
+                    onSwipeUp nop
+                    onSwipeDown nop}
+               :as attrs} body]
   (let [atom-pan-responder (atom nil)]
     (r/create-class
-      {:component-will-mount (fn [this]
-        (let [trigger-swipe-handlers (fn [swipe-direction gesture-state]
-          (if (= swipe-direction (:left swipe-directions))
-            (if (fn? onSwipeLeft)
-              (apply onSwipeLeft)
-              nil)
-            (if (= swipe-direction (:right swipe-directions))
-              (if (fn? onSwipeRight)
-                (apply onSwipeRight)
-                nil)
-              (if (= swipe-direction (:up swipe-directions))
-                (if (fn? onSwipeUp)
-                  (apply onSwipeUp)
-                  nil)
-                (if (= swipe-direction (:down swipe-directions))
-                  (if (fn? onSwipeDown)
-                    (apply onSwipeDown)
-                    nil)
-                  nil)))))]
-          (let [responder-end (fn [evt gesture-state]
-            (trigger-swipe-handlers (get-swipe-direction evt gesture-state) gesture-state))]
-            (reset!
-              atom-pan-responder
-              (.create c/pan-responder (clj->js {
-                :onStartShouldSetPanResponder should-set-pan-responder
-                :onMoveShouldSetPanResponder should-set-pan-responder
-                :onPanResponderRelease responder-end
-                :onPanResponderTerminate responder-end}))))))
-      :reagent-render (fn [attrs body]
-        [c/view
-            (merge (js->clj (.-panHandlers @atom-pan-responder)) {:style {:flex 1}})
-            body
-        ])
-      })))
+      {:component-will-mount 
+       (fn [this]
+         (let [trigger-swipe-handlers (fn [swipe-direction gesture-state]
+                                        (case swipe-direction
+                                          "SWIPE_LEFT" (onSwipeLeft)
+                                          "SWIPE_RIGHT" (onSwipeRight)
+                                          "SWIPE_UP" (onSwipeUp)
+                                          "SWIPE_DOWN" (onSwipeDown)
+                                          nil))]
+           (let [responder-end (fn [evt gesture-state]
+                                 (trigger-swipe-handlers (get-swipe-direction evt gesture-state) gesture-state))]
+             (reset!
+               atom-pan-responder
+               (.create c/pan-responder (clj->js {:onStartShouldSetPanResponder should-set-pan-responder
+                                                  :onMoveShouldSetPanResponder should-set-pan-responder
+                                                  :onPanResponderRelease responder-end
+                                                  :onPanResponderTerminate responder-end}))))))
+       :reagent-render 
+       (fn [attrs body]
+         [c/view
+          (merge (js->clj (.-panHandlers @atom-pan-responder)) {:style (:style attrs)})
+          body])})))

@@ -14,7 +14,7 @@
                      (fn []
                        (let [x (swap! progress-atom #( + 0.01 %))]
                          (when (> x 1.0)
-                           (reset! m/app-state :tour)
+                           (reset! m/app-state :community)
                            (js/clearInterval @id)))) 15))))
        :reagent-render
        (fn []

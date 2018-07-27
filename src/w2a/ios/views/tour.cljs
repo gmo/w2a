@@ -4,45 +4,38 @@
             [w2a.ios.model :as m]))
 
 (defn tour-img [source]
-  [c/view
-   {:padding 15}
+  [c/view {:style {:padding-right 10}}
    [c/image {:source (js/require source)
-           :style  {:width 275
-                    :height 300
-                    :margin-bottom 10}}]])
+           :style  {:margin-top 15
+                    :width 315
+                    :height 535}}]])
 
 (defn tour []
   [c/view {:style {:flex 1
-                 :background-color "#cd5334"}}
-   [c/view {:style {:flex 1
-                  :align-items :center
-                  :justify-content :center
-                  :width "100%"}}
-    [c/logo]]
+                   :background-color :white}}
    [c/view {:style {:flex 2
-                  :width "100%"
-                  :align-items :center}}
-    [c/text {:style {:font-size 18
-                   :font-weight "700"
-                   :width "80%"
-                   :color "#fff"
-                   :margin-bottom 10}}
-     "Take a look at these images to learn about the app!"]
+                    :margin-top 20
+                    :justify-content :flex-end
+                    :align-items :center}}
+    [c/logo]]
+   [c/view {:style {:flex 10}}
     [c/scroll-view {:horizontal true
-                  :shows-horizontal-scroll-indicator true}
-     [tour-img "./images/1.jpg"]
-     [tour-img "./images/2.jpg"]
-     [tour-img "./images/3.jpg"]]]
-   [c/view {:style {:flex 1
-                  :width "100%"
-                  :justify-content :center
-                  :align-items :center}}
+                    :shows-horizontal-scroll-indicator true
+                    :content-container-style {:margin-top 10
+                                              :margin-left 10}}
+     [tour-img "./images/1.png"]
+     [tour-img "./images/2.png"]
+     [tour-img "./images/3.png"]]]
+   [c/view {:style {:flex 2
+                    :width "100%"
+                    :justify-content :center
+                    :align-items :center}}
     [c/touchable-highlight {:style {:background-color "#17bebb"
-                                  :padding 10
-                                  :border-radius 5
-                                  :width "80%"}
+                                    :padding 10
+                                    :border-radius 5
+                                    :width "80%"}
                             :on-press #(reset! m/app-state :profile)}
      [c/text {:style {:color "white"
-                    :text-align "center"
-                    :font-size 24
-                    :font-weight "700"}} "Ready!"]]]])
+                      :text-align "center"
+                      :font-size 24
+                      :font-weight "700"}} "Let's get started!"]]]])

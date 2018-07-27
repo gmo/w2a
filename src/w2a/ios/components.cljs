@@ -6,7 +6,6 @@
 (def easing (.-Easing ReactNative))
 (def animated-value (.-Value (.-Animated ReactNative)))
 (def app-registry (.-AppRegistry ReactNative))
-(def button (r/adapt-react-class (.-Button ReactNative)))
 (def pan-responder (.-PanResponder ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
@@ -29,8 +28,8 @@
                    :height 80
                    :margin-bottom 10}}])
 
-(defn input [& {:keys [placeholder]}]
-  (let [text (r/atom "")
+(defn input [& {:keys [placeholder atom]}]
+  (let [text (or atom (r/atom ""))
         focus? (r/atom false)]
     (fn []
       [view {:style {:background-color :white
@@ -42,7 +41,8 @@
                      :border-width 3
                      :width "100%"}}
        [text-input {:placeholder placeholder
-                    :on-change #(reset! text (.. % -target -value))
+                    :on-change-text (fn [s]
+                                      (reset! text s))
                     :value @text
                     :on-focus #(reset! focus? true)
                     :on-blur #(reset! focus? false)
