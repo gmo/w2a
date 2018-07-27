@@ -23,7 +23,9 @@
    [c/kb-view {:behavior :padding
                :style {:flex 1}}
     [c/view {:style {:flex 1
-                     :margin-top 50}}
+                     :margin-top 50
+                     :align-items :center
+                     :justify-content :center}}
      [c/text {:style {:font-size 35
                       :color "#17bebb"}} "Notes"]]
     [c/view {:style {:flex 2

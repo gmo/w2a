@@ -3,13 +3,6 @@
             [w2a.ios.components :as c]
             [w2a.ios.model :as m]))
 
-(defn tour-img [source]
-  [c/view {:style {:padding-right 10}}
-   [c/image {:source (js/require source)
-           :style  {:margin-top 15
-                    :width 315
-                    :height 535}}]])
-
 (defn tour []
   [c/view {:style {:flex 1
                    :background-color :white}}
@@ -23,9 +16,21 @@
                     :shows-horizontal-scroll-indicator true
                     :content-container-style {:margin-top 10
                                               :margin-left 10}}
-     [tour-img "./images/1.png"]
-     [tour-img "./images/2.png"]
-     [tour-img "./images/3.png"]]]
+     [c/view {:style {:padding-right 10}}
+      [c/image {:source (js/require "./images/2.png")
+                :style  {:margin-top 15
+                         :width 315
+                         :height 535}}]]
+     [c/view {:style {:padding-right 10}}
+      [c/image {:source (js/require "./images/1.png")
+                :style  {:margin-top 15
+                         :width 315
+                         :height 535}}]]
+     [c/view {:style {:padding-right 10}}
+      [c/image {:source (js/require "./images/3.png")
+                :style  {:margin-top 15
+                         :width 315
+                         :height 535}}]]]]
    [c/view {:style {:flex 2
                     :width "100%"
                     :justify-content :center

@@ -18,5 +18,6 @@
    [c/text {:style {:font-size 30
                     :font-weight "900"
                     :color "rgba(255,255,255,0.8)"
-                    :margin-bottom 30}}
+                    :margin-bottom 30
+                    :text-align :center}}
     "THE DISCIPLEMAKER"]])
